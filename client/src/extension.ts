@@ -35,6 +35,12 @@ import {
 
 import { LanguageClient, LanguageClientOptions, TransportKind } from 'vscode-languageclient/node';
 
+const CLIENT_ID = 'vscode-nico';
+
+const CLIENT_NAME = 'Nico';
+
+const LANGUAGE_ID = 'nico';
+
 // The default client for an untitled document.
 let defaultClient: LanguageClient;
 
@@ -59,6 +65,7 @@ function sortedWorkspaceFolders(): string[] {
   }
   return _sortedWorkspaceFolders;
 }
+
 Workspace.onDidChangeWorkspaceFolders(() => (_sortedWorkspaceFolders = undefined));
 
 function getOuterMostWorkspaceFolder(folder: WorkspaceFolder): WorkspaceFolder {
@@ -83,7 +90,7 @@ export function activate(context: ExtensionContext): void {
   function didOpenTextDocument(document: TextDocument): void {
     // We are only interested in language mode text
     if (
-      document.languageId !== 'nico' ||
+      document.languageId !== LANGUAGE_ID ||
       (document.uri.scheme !== 'file' && document.uri.scheme !== 'untitled')
     ) {
       return;
@@ -98,26 +105,25 @@ export function activate(context: ExtensionContext): void {
         run: { module, transport: TransportKind.ipc },
         debug: { module, transport: TransportKind.ipc, options: debugOptions }
       };
+
       const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: 'untitled', language: 'nico' }],
-        diagnosticCollectionName: 'lsp-multi-server-example',
+        documentSelector: [{ scheme: 'untitled', language: LANGUAGE_ID }],
+        diagnosticCollectionName: CLIENT_ID,
         outputChannel: outputChannel
       };
-      defaultClient = new LanguageClient(
-        'lsp-multi-server-example',
-        'LSP Multi Server Example',
-        serverOptions,
-        clientOptions
-      );
+      defaultClient = new LanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions);
       defaultClient.start();
       return;
     }
+
     let folder = Workspace.getWorkspaceFolder(uri);
+
     // Files outside a folder can't be handled. This might depend on the language.
     // Single file languages like JSON might handle files outside the workspace folders.
     if (!folder) {
       return;
     }
+
     // If we have nested workspace folders we only start a server on the outer most workspace folder.
     folder = getOuterMostWorkspaceFolder(folder);
 
@@ -133,20 +139,17 @@ export function activate(context: ExtensionContext): void {
         documentSelector: [
           {
             scheme: 'file',
-            language: 'nico',
+            language: LANGUAGE_ID,
             pattern: `${folder.uri.fsPath}/**/*`
           }
         ],
-        diagnosticCollectionName: 'lsp-multi-server-example',
+        diagnosticCollectionName: CLIENT_ID,
         workspaceFolder: folder,
         outputChannel: outputChannel
       };
-      const client = new LanguageClient(
-        'lsp-multi-server-example',
-        'LSP Multi Server Example',
-        serverOptions,
-        clientOptions
-      );
+
+      const client = new LanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions);
+
       client.start();
       clients.set(folder.uri.toString(), client);
     }
