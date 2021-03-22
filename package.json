@@ -61,14 +61,19 @@
     "compile": "tsc -b",
     "watch": "tsc -b -w",
     "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "sh ./scripts/e2e.sh"
   },
   "devDependencies": {
     "@types/mocha": "^8.0.3",
     "@types/node": "^12.12.0",
-    "@typescript-eslint/parser": "^2.3.0",
-    "eslint": "^6.4.0",
     "mocha": "^8.1.1",
+    "@typescript-eslint/eslint-plugin": "^4.13.0",
+    "@typescript-eslint/parser": "^4.13.0",
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "typescript": "^4.2.2"
   }
 }
