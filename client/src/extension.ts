@@ -86,10 +86,9 @@ function getOuterMostWorkspaceFolder(folder: WorkspaceFolder): WorkspaceFolder {
 
 export function activate(context: ExtensionContext): void {
   const outputChannel: OutputChannel = Window.createOutputChannel(CLIENT_ID);
+  const traceOutputChannel: OutputChannel = Window.createOutputChannel(`${CLIENT_ID}-trace`);
 
   const serverPath = context.asAbsolutePath(path.join('..', 'nico', 'target', 'debug', 'nico-ls'));
-
-  console.log('serverPath', serverPath);
 
   if (!fs.existsSync(serverPath)) {
     throw new Error(`No language server at ${serverPath}`);
@@ -130,7 +129,8 @@ export function activate(context: ExtensionContext): void {
       const clientOptions: LanguageClientOptions = {
         documentSelector: [{ scheme: 'untitled', language: LANGUAGE_ID }],
         diagnosticCollectionName: CLIENT_ID,
-        outputChannel: outputChannel
+        outputChannel,
+        traceOutputChannel
       };
       defaultClient = new LanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions);
       defaultClient.start();
@@ -169,7 +169,8 @@ export function activate(context: ExtensionContext): void {
         ],
         diagnosticCollectionName: CLIENT_ID,
         workspaceFolder: folder,
-        outputChannel: outputChannel
+        outputChannel,
+        traceOutputChannel
       };
 
       const client = new LanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions);
