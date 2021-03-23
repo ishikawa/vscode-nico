@@ -117,15 +117,6 @@ export function activate(context: ExtensionContext): void {
 
     // Untitled files go to a default client.
     if (uri.scheme === 'untitled' && !defaultClient) {
-      /*
-      const modulePath = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
-      const debugOptions = { execArgv: ['--nolazy', '--inspect=6010'] };
-      const serverOptions = {
-        run: { module: modulePath, transport: TransportKind.ipc },
-        debug: { module: modulePath, transport: TransportKind.ipc, options: debugOptions }
-      };
-      */
-
       const clientOptions: LanguageClientOptions = {
         documentSelector: [{ scheme: 'untitled', language: LANGUAGE_ID }],
         diagnosticCollectionName: CLIENT_ID,
@@ -149,16 +140,6 @@ export function activate(context: ExtensionContext): void {
     folder = getOuterMostWorkspaceFolder(folder);
 
     if (!clients.has(folder.uri.toString())) {
-      /*
-      const modulePath = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
-      const debugOptions = {
-        execArgv: ['--nolazy', `--inspect=${6011 + clients.size}`]
-      };
-      const serverOptions = {
-        run: { module: modulePath, transport: TransportKind.ipc },
-        debug: { module: modulePath, transport: TransportKind.ipc, options: debugOptions }
-      };
-       */
       const clientOptions: LanguageClientOptions = {
         documentSelector: [
           {
@@ -195,6 +176,7 @@ export function activate(context: ExtensionContext): void {
 
 export async function deactivate(): Promise<void> {
   const promises: Promise<void>[] = [];
+
   if (defaultClient) {
     promises.push(defaultClient.stop());
   }
