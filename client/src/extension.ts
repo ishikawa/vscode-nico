@@ -23,6 +23,7 @@
  * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ------------------------------------------------------------------------------------------ */
 import * as path from 'path';
+import * as fs from 'fs';
 import {
   workspace as Workspace,
   window as Window,
@@ -33,9 +34,9 @@ import {
   Uri
 } from 'vscode';
 
-import { LanguageClient, LanguageClientOptions, TransportKind } from 'vscode-languageclient/node';
+import { Executable, LanguageClient, LanguageClientOptions } from 'vscode-languageclient/node';
 
-const CLIENT_ID = 'vscode-nico';
+const CLIENT_ID = 'nico';
 
 const CLIENT_NAME = 'Nico';
 
@@ -84,8 +85,25 @@ function getOuterMostWorkspaceFolder(folder: WorkspaceFolder): WorkspaceFolder {
 }
 
 export function activate(context: ExtensionContext): void {
-  const module = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
-  const outputChannel: OutputChannel = Window.createOutputChannel('lsp-multi-server-example');
+  const outputChannel: OutputChannel = Window.createOutputChannel(CLIENT_ID);
+
+  const serverPath = context.asAbsolutePath(path.join('..', 'nico', 'target', 'debug', 'nico-ls'));
+
+  console.log('serverPath', serverPath);
+
+  if (!fs.existsSync(serverPath)) {
+    throw new Error(`No language server at ${serverPath}`);
+  }
+
+  const serverOptions: Executable = {
+    command: serverPath,
+    args: [],
+    options: {
+      env: {
+        RUST_LOG: 'info'
+      }
+    }
+  };
 
   function didOpenTextDocument(document: TextDocument): void {
     // We are only interested in language mode text
@@ -100,11 +118,14 @@ export function activate(context: ExtensionContext): void {
 
     // Untitled files go to a default client.
     if (uri.scheme === 'untitled' && !defaultClient) {
+      /*
+      const modulePath = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
       const debugOptions = { execArgv: ['--nolazy', '--inspect=6010'] };
       const serverOptions = {
-        run: { module, transport: TransportKind.ipc },
-        debug: { module, transport: TransportKind.ipc, options: debugOptions }
+        run: { module: modulePath, transport: TransportKind.ipc },
+        debug: { module: modulePath, transport: TransportKind.ipc, options: debugOptions }
       };
+      */
 
       const clientOptions: LanguageClientOptions = {
         documentSelector: [{ scheme: 'untitled', language: LANGUAGE_ID }],
@@ -128,13 +149,16 @@ export function activate(context: ExtensionContext): void {
     folder = getOuterMostWorkspaceFolder(folder);
 
     if (!clients.has(folder.uri.toString())) {
+      /*
+      const modulePath = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
       const debugOptions = {
         execArgv: ['--nolazy', `--inspect=${6011 + clients.size}`]
       };
       const serverOptions = {
-        run: { module, transport: TransportKind.ipc },
-        debug: { module, transport: TransportKind.ipc, options: debugOptions }
+        run: { module: modulePath, transport: TransportKind.ipc },
+        debug: { module: modulePath, transport: TransportKind.ipc, options: debugOptions }
       };
+       */
       const clientOptions: LanguageClientOptions = {
         documentSelector: [
           {
