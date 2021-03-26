@@ -33,7 +33,6 @@
         "configuration": "language-configuration.json"
       }
     ],
-    "grammars": [],
     "configuration": {
       "type": "object",
       "title": "Nico",
