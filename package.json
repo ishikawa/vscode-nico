@@ -29,7 +29,8 @@
         ],
         "aliases": [
           "Nico"
-        ]
+        ],
+        "configuration": "language-configuration.json"
       }
     ],
     "configuration": {
