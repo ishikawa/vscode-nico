@@ -99,7 +99,8 @@ export function activate(context: ExtensionContext): void {
     args: [],
     options: {
       env: {
-        RUST_LOG: 'info'
+        RUST_LOG: 'info',
+        RUST_BACKTRACE: 'full'
       }
     }
   };
