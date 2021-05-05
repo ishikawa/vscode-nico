@@ -33,6 +33,13 @@
         "configuration": "language-configuration.json"
       }
     ],
+    "grammars": [
+      {
+        "language": "nico",
+        "scopeName": "source.nico",
+        "path": "./nico.tmLanguage.json"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "Nico",
