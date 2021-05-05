@@ -7,6 +7,7 @@
     { "include": "#numeric" },
     { "include": "#string" },
     { "include": "#operator" },
+    { "include": "#punctuation" },
     { "include": "#comment.line" }
   ],
   "repository": {
@@ -40,6 +41,10 @@
     "operator": {
       "name": "keyword.operator.nico",
       "match": "(\\+|-|\\*|/|%|==|=|<=|=>|<|>|\\.\\.)"
+    },
+    "punctuation": {
+      "name": "punctuation.nico",
+      "match": "(\\.|:|\\(|\\)|\\{|\\})"
     },
     "comment.line": {
       "name": "comment.line.nico",
