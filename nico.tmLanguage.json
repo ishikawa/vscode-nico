@@ -1,0 +1,14 @@
+{
+  "scopeName": "source.nico",
+  "patterns": [{ "include": "#keyword" }, { "include": "#types" }],
+  "repository": {
+    "keyword": {
+      "name": "keyword.control.untitled",
+      "match": "\\b(if|else|end|case|when|let|struct|fun)\\b"
+    },
+    "types": {
+      "name": "storage.type",
+      "match": "\\b(i32)\\b"
+    }
+  }
+}
