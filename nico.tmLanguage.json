@@ -1,14 +1,49 @@
 {
   "scopeName": "source.nico",
-  "patterns": [{ "include": "#keyword" }, { "include": "#types" }],
+  "patterns": [
+    { "include": "#keyword.control" },
+    { "include": "#storage.type" },
+    { "include": "#type.primitive" },
+    { "include": "#numeric" },
+    { "include": "#string" },
+    { "include": "#operator" },
+    { "include": "#comment.line" }
+  ],
   "repository": {
-    "keyword": {
-      "name": "keyword.control.untitled",
-      "match": "\\b(if|else|end|case|when|let|struct|fun)\\b"
+    "keyword.control": {
+      "name": "keyword.control.nico",
+      "match": "\\b(if|else|end|case|when|fun)\\b"
     },
-    "types": {
-      "name": "storage.type",
+    "storage.type": {
+      "name": "storage.type.nico",
+      "match": "\\b(let|struct)\\b"
+    },
+    "type.primitive": {
+      "name": "support.type.primitive.nico",
       "match": "\\b(i32)\\b"
+    },
+    "numeric": {
+      "name": "constant.numeric.nico",
+      "match": "\\b\\d+\\b"
+    },
+    "string": {
+      "name": "string.quoted.ts",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.nico",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "operator": {
+      "name": "keyword.operator.nico",
+      "match": "(\\+|-|\\*|/|%|==|=|<=|=>|<|>|\\.\\.)"
+    },
+    "comment.line": {
+      "name": "comment.line.nico",
+      "match": "#.*"
     }
   }
 }
