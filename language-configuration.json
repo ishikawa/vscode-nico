@@ -19,5 +19,9 @@
     ["[", "]"],
     ["(", ")"],
     ["\"", "\""]
-  ]
+  ],
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(?:fun|if|case).*$",
+    "decreaseIndentPattern": "^\\s*end\\s*$"
+  }
 }
