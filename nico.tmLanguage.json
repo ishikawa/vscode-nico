@@ -40,7 +40,7 @@
     },
     "operator": {
       "name": "keyword.operator.nico",
-      "match": "(\\+|-|\\*|/|%|==|=|<=|=>|<|>|\\.\\.\\.?)"
+      "match": "(\\+|-|\\*|/|%|==|=|<=|=>|<|>|\\.\\.\\.?|&&|\\|\\|)"
     },
     "punctuation": {
       "name": "punctuation.nico",
